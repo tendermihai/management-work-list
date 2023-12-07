@@ -54,7 +54,7 @@ let UpdateWork = () => {
         <h1>Update Work</h1>
         <div className="main--flex">
           <div>
-            <label for="workTitle">Work Title</label>
+            <label htmlFor="workTitle">Work Title</label>
             <input
               id="workTitle"
               name="workTitle"
@@ -66,7 +66,7 @@ let UpdateWork = () => {
             />
           </div>
           <div>
-            <label for="workImage">Work Image</label>
+            <label htmlFor="workImage">Work Image</label>
             <input
               id="workImage"
               name="workImage"
@@ -79,7 +79,7 @@ let UpdateWork = () => {
           </div>
 
           <div>
-            <label for="workLink">Work Link</label>
+            <label htmlFor="workLink">Work Link</label>
             <input
               id="workLink"
               name="workLink"

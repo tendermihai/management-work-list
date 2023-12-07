@@ -21,17 +21,17 @@ async function getWorks() {
     let data = await api("/api/v1/work/all", "GET", null);
 
     if (data.status === 200) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez,
+        payload: res,
         type: "success",
       };
     } else if (data.status === 400) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez.error.message,
+        payload: res.error.message,
         type: "error",
       };
     }
@@ -47,30 +47,28 @@ async function deleteWork(id) {
   try {
     let data = await api(`/api/v1/work/delete/${id}`, "DELETE");
     if (data.status === 200) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez,
+        payload: res,
         type: "success",
       };
     } else if (data.status === 400) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez.error.message,
+        payload: res.error.message,
         type: "error",
       };
     } else if (data.status === 500) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez.error,
+        payload: res.error,
         type: "error",
       };
     }
   } catch (error) {
-    console.log(error);
-
     return {
       payload: "error occured",
       type: "error",
@@ -83,24 +81,24 @@ async function addNewWork(work) {
     let data = await api("/api/v1/work/add", "POST", work);
 
     if (data.status === 200) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
         type: "success",
-        payload: rez,
+        payload: res,
       };
     } else if (data.status === 400) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez.error.message,
+        payload: res.error.message,
         type: "error",
       };
     } else if (data.status === 500) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez.error,
+        payload: res.error,
         type: "error",
       };
     }
@@ -116,24 +114,24 @@ async function workUpdate(work, id) {
   try {
     let data = await api(`/api/v1/work/update/${id}`, "PUT", work);
     if (data.status === 200) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez,
+        payload: res,
         type: "success",
       };
     } else if (data.status === 400) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez.error.message,
+        payload: res.error.message,
         type: "error",
       };
     } else if (data.status === 500) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez.error,
+        payload: res.error,
         type: "error",
       };
     }
@@ -150,24 +148,24 @@ async function getWorkById(id) {
     let data = await api(`/api/v1/work/find/by/workId/${id}`, "GET", null);
 
     if (data.status === 200) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez,
+        payload: res,
         type: "success",
       };
     } else if (data.status === 400) {
-      let rez = await data.json();
+      let res = await data.json();
 
       return {
-        payload: rez.error.message,
+        payload: res.error.message,
         type: "error",
       };
     } else if (data.status === 500) {
-      let rez = data.json();
+      let res = data.json();
 
       return {
-        payload: rez.error,
+        payload: res.error,
         type: "error",
       };
     }

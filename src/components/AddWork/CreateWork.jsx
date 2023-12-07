@@ -16,12 +16,13 @@ const CreateWork = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
   const [loadingState, setLoadingState] = useState("");
+  const [imgSrc, setImgSrc] = useState("");
 
   function handleImageChange(e) {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = async function () {
-      document.getElementById("display").src = reader.result;
+      setImgSrc(reader.result);
 
       setWorkData({ ...workData, image: b64toBlob(reader.result) });
     };
@@ -60,9 +61,6 @@ const CreateWork = () => {
         };
 
         const response = await addNewWork(work);
-
-        console.log(response.type, "this is response.type");
-        console.log(errors.length, "length of errors");
 
         if (response.type === "success") {
           setLoadingState("success");
@@ -106,13 +104,13 @@ const CreateWork = () => {
 
       {errors.length > 0 &&
         errors.map((element) => {
-          return <Alert message={element} type="warning" />;
+          return <Alert message={element} type="warning" className="mb-1" />;
         })}
 
       <section>
         <div className="main--flex">
           <div className="form-group">
-            <label for="exampleInputTitle" className="form-label mt-4">
+            <label htmlFor="exampleInputTitle" className="form-label mt-4">
               Work Title
             </label>
             <input
@@ -125,15 +123,10 @@ const CreateWork = () => {
                 setWorkData({ ...workData, title: e.target.value })
               }
             />
-            <p className="error-message">
-              {errorMessage === "Please enter a work name"
-                ? errorMessage
-                : null}
-            </p>
           </div>
 
           <div className="form-group">
-            <label for="exampleInputImage" className="form-label mt-4">
+            <label htmlFor="exampleInputImage" className="form-label mt-4">
               Image
             </label>
             <input
@@ -142,20 +135,18 @@ const CreateWork = () => {
               type="file"
               onChange={(e) => handleImageChange(e)}
             />
-            <p className="error-message">
-              {errorMessage === "Please enter a date" ? errorMessage : null}
-            </p>
+ 
           </div>
-
-          <img
-            id="display"
-            src=""
-            style={{ width: "150px", height: "150px" }}
-            alt="Uploaded"
-          />
+          {imgSrc && (
+            <img
+              src={imgSrc}
+              style={{ width: "100%", height: "auto", maxWidth: "400px" }}
+              alt="Uploaded"
+            />
+          )}
 
           <div className="form-group">
-            <label for="exampleInputLink" className="form-label mt-4">
+            <label htmlFor="exampleInputLink" className="form-label mt-4">
               Link
             </label>
             <input
@@ -168,13 +159,19 @@ const CreateWork = () => {
                 setWorkData({ ...workData, link: e.target.value })
               }
             />
-            <p className="error-message">
-              {errorMessage === "Please enter a date" ? errorMessage : null}
-            </p>
+
           </div>
         </div>
 
-        <section className="create-work-btns">
+        <section className="d-flex justify-content-around mt-3">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            fdprocessedid="9shepe"
+            onClick={handleCancelButton}
+          >
+            Cancel
+          </button>
           <button
             type="button"
             className="btn btn-primary"
@@ -182,14 +179,6 @@ const CreateWork = () => {
             onClick={handleCreateWork}
           >
             Create Work
-          </button>
-          <button
-            type="button"
-            className="btn btn-primary"
-            fdprocessedid="9shepe"
-            onClick={handleCancelButton}
-          >
-            Cancel
           </button>
         </section>
       </section>
