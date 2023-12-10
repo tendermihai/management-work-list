@@ -113,6 +113,8 @@ async function addNewWork(work) {
 async function workUpdate(work, id) {
   try {
     let data = await api(`/api/v1/work/update/${id}`, "PUT", work);
+    console.log("Response Data:", data); // Log the response data
+
     if (data.status === 200) {
       let res = await data.json();
 
@@ -136,8 +138,9 @@ async function workUpdate(work, id) {
       };
     }
   } catch (error) {
+    console.error("Error in workUpdate:", error);
     return {
-      payload: "error occured",
+      payload: "error occurred",
       type: "error",
     };
   }

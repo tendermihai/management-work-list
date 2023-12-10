@@ -1,4 +1,3 @@
-// Home.jsx
 import React, { useEffect, useState } from "react";
 import { getWorks } from "../../service/work-service";
 import Spinner from "react-bootstrap/Spinner";
@@ -11,6 +10,22 @@ const Home = () => {
   const [works, setWorks] = useState([]);
   const [masterCheckbox, setMasterCheckbox] = useState(false);
 
+  function readBlobAsDataURL(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        resolve(event.target.result);
+      };
+
+      reader.onerror = function (event) {
+        reject(event.target.error);
+      };
+
+      reader.readAsText(blob);
+    });
+  }
+
   const handleWorks = async () => {
     setLoadingState("loading");
 
@@ -18,7 +33,28 @@ const Home = () => {
 
     if (response.type === "success") {
       setLoadingState("success");
-      setWorks(response.payload);
+      const cards = [];
+      for (let i = 0; i < response.payload.length; i++) {
+        const item = response.payload[i];
+
+        const imageUrl = `http://localhost:8080/api/v1/work/getImage/${item.id}`;
+
+        // Fetch the binary resource as a Blob
+        const res = await fetch(imageUrl);
+        const blob = await res.blob();
+        const image = await readBlobAsDataURL(blob);
+        const card = {
+          id: item.id,
+          title: item.title,
+          image,
+          link: item.link,
+          hidden: false,
+        };
+
+        cards.push(card);
+      }
+
+      setWorks(cards);
     } else {
       setLoadingState("error");
       setErrorMessage(response.payload);
@@ -29,6 +65,18 @@ const Home = () => {
     handleWorks();
   }, []);
 
+  const handleMasterCheckboxChange = () => {
+    setMasterCheckbox(!masterCheckbox);
+  };
+
+  const handleCardToggle = (cardId, checked) => {
+    const updatedData = works.map((item) =>
+      item.id === cardId ? { ...item, hidden: checked } : item
+    );
+
+    setWorks(updatedData);
+  };
+
   return (
     <>
       <div className="master-checkbox-container">
@@ -36,9 +84,9 @@ const Home = () => {
           <input
             type="checkbox"
             checked={masterCheckbox}
-            onChange={() => setMasterCheckbox(!masterCheckbox)}
+            onChange={handleMasterCheckboxChange}
           />
-          Toggle All Works
+          Hide selected works
         </label>
       </div>
       <AddWork />
@@ -47,10 +95,12 @@ const Home = () => {
           {works.length > 0 ? (
             works.map((item) => (
               <Card
-                work={item}
                 key={item.id}
+                work={item}
                 allWorks={handleWorks}
-                masterCheckbox={masterCheckbox}
+                onToggle={handleCardToggle}
+                isChecked={item.hidden}
+                hideWhenToggleAll={masterCheckbox}
               />
             ))
           ) : (

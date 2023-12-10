@@ -9,3 +9,70 @@ body {
 .hidden {
   display: none;
 }
+
+.card {
+  width: 400px;
+}
+
+.container-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+/* Media query for small screens */
+@media (max-width: 767px) {
+  .container-cards {
+    justify-content: center;
+  }
+
+  .myCards {
+    flex: 0 0 100%;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.delete-work {
+  border: none;
+  background: none;
+}
+
+.delete-work:hover {
+  color: coral;
+}
+
+.update-work {
+  border: none;
+  background: none;
+}
+
+.update-work:hover {
+  color: coral;
+}
+
+.updateWork {
+  border: none;
+  background: none;
+}
+.updateWork:hover {
+  color: coral;
+}
+
+.cancelUpdateWork {
+  border: none;
+  background: none;
+}
+
+.cancelUpdateWork:hover {
+  color: coral;
+}

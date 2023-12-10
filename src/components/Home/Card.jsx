@@ -1,13 +1,12 @@
-// Card.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import { deleteWork } from "../../service/work-service";
 import { useNavigate } from "react-router-dom";
+import { Buffer } from "buffer";
 
-const Card = ({ work, allWorks, masterCheckbox }) => {
+const Card = ({ work, allWorks, onToggle, isChecked, hideWhenToggleAll }) => {
   const [loadingState, setLoadingState] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isChecked, setIsChecked] = useState(masterCheckbox);
   const { id, title, image, link } = work;
   const navigate = useNavigate();
 
@@ -34,25 +33,29 @@ const Card = ({ work, allWorks, masterCheckbox }) => {
     navigate(`/work-update/${id}`);
   };
 
-  useEffect(() => {
-    setIsChecked(masterCheckbox);
-  }, [masterCheckbox]);
+  const handleCheckboxToggle = (e) => {
+    onToggle(id, e.target.checked);
+  };
 
   return (
-    <div className={`myCards ${isChecked ? "" : "hidden"}`}>
+    <div
+      className={`myCards ${isChecked && hideWhenToggleAll ? "hidden" : ""}`}
+    >
       <div className="card text-white bg-primary mb-3">
         <div className="card-header">
           <input
             type="checkbox"
             checked={isChecked}
-            onChange={() => setIsChecked(!isChecked)}
+            onChange={(e) => handleCheckboxToggle(e)}
             className="card-checkbox"
           />
           ID: {id}
         </div>
         <div className="card-body">
           <h4 className="card-title">Title: {title}</h4>
-          {image && <img src={image} alt={`Image for work ${id}`} />}
+          {image && (
+            <img src={image} alt={`Image for work ${id}`} width="150px" />
+          )}
           <p className="card-text">
             Link:{" "}
             <span
@@ -63,16 +66,12 @@ const Card = ({ work, allWorks, masterCheckbox }) => {
             </span>
           </p>
           <section className="btns">
-            {isChecked && (
-              <>
-                <button className="delete-work" onClick={handleDelete}>
-                  Delete
-                </button>
-                <button className="update-work" onClick={handleUpdateWorkPage}>
-                  Update
-                </button>
-              </>
-            )}
+            <button className="delete-work" onClick={handleDelete}>
+              Delete
+            </button>
+            <button className="update-work" onClick={handleUpdateWorkPage}>
+              Update
+            </button>
           </section>
         </div>
       </div>

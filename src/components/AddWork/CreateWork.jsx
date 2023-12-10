@@ -20,13 +20,23 @@ const CreateWork = () => {
 
   function handleImageChange(e) {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = async function () {
-      setImgSrc(reader.result);
+    // console.log(file);
+    //
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = ()=>{
+          setWorkData({ ...workData, image: reader.result });
+        }
+    //
+    
 
-      setWorkData({ ...workData, image: b64toBlob(reader.result) });
-    };
-    reader.readAsDataURL(file);
+    // const reader = new FileReader();
+    // reader.onload = async function () {
+    //   setImgSrc(reader.result);
+
+    //   setWorkData({ ...workData, image: b64toBlob(reader.result) });
+    // };
+    // reader.readAsDataURL(file);
   }
 
   const b64toBlob = (b64Data, contentType = "", sliceSize = 512) => {
@@ -135,7 +145,6 @@ const CreateWork = () => {
               type="file"
               onChange={(e) => handleImageChange(e)}
             />
- 
           </div>
           {imgSrc && (
             <img
@@ -159,7 +168,6 @@ const CreateWork = () => {
                 setWorkData({ ...workData, link: e.target.value })
               }
             />
-
           </div>
         </div>
 
